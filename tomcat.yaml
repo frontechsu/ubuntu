@@ -1,0 +1,28 @@
+---
+- name: Install Apache Tomcat10 using ansible
+  hosts: tomcat
+  become: true
+  tasks:
+    - name: Update the System Packages
+      apt:
+        upgrade: yes
+ 
+    - name: Install JAVA
+      apt:
+        name: openjdk-11-jre-headless
+        state: present
+ 
+ 
+    - name: Creates directory
+      file:
+        path: /opt/tomcat10
+        state: directory
+ 
+    - name: download & unarchive tomcat10 
+      unarchive:
+        src: https://dlcdn.apache.org/tomcat/tomcat-10/v10.0.27/bin/apache-tomcat-10.0.27.tar.gz
+        dest: /opt/tomcat10/
+        remote_src: yes
+
+    - name: Run Tomcat
+      shell: nohup /opt/tomcat10/apache-tomcat-10.0.27/bin/startup.sh
